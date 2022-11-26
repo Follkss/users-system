@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { add } from 'date-fns';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
+import { mapUserToPresent } from './helpers';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -39,5 +40,10 @@ export class UsersController {
     const token = req.cookies.token;
 
     return this.usersService.findMe(token);
+  }
+
+  @Get()
+  async users() {
+    return (await this.usersService.findAll()).map(mapUserToPresent);
   }
 }

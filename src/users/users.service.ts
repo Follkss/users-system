@@ -76,4 +76,8 @@ export class UsersService {
 
     return mapUserToPresent(user);
   }
+
+  findAll() {
+    return this.usersRepository.find();
+  }
 }
