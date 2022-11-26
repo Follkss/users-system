@@ -59,6 +59,11 @@ export class UsersService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    // Update user
+    const token = v4();
+    user.token = token;
+    await this.usersRepository.save(user);
+
     return {
       ...mapUserToPresent(user),
       token: user.token,
