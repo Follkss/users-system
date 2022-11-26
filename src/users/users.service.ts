@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 import { CreateUserDto, LoginUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { mapUserToPresent } from './helpers';
 
 @Injectable()
 export class UsersService {
@@ -40,8 +41,7 @@ export class UsersService {
     );
 
     return {
-      id: user.id,
-      username: user.username,
+      ...mapUserToPresent(user),
       token,
     };
   }
@@ -59,7 +59,10 @@ export class UsersService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return user;
+    return {
+      ...mapUserToPresent(user),
+      token: user.token,
+    };
   }
 
   async findMe(token: string) {
@@ -71,6 +74,6 @@ export class UsersService {
       },
     });
 
-    return user;
+    return mapUserToPresent(user);
   }
 }
